@@ -12,7 +12,7 @@ type Order struct {
 	ID int64
 	CustomerID int64
 	Status string
-	OrderItem []OrderItem
+	OrderItems []OrderItem
 	CreatedAt int64
 }
 
@@ -21,6 +21,6 @@ func NewOrder(customerId int64, orderItems []OrderItem,) Order{
 		CreatedAt: time.Now().Unix(),
 		Status: "Pending",
 		CustomerID: customerId,
-		OrderItem: orderItems,
+		OrderItems: orderItems,
 	}
 }

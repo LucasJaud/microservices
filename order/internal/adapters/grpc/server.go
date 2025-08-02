@@ -49,9 +49,9 @@ func (a Adapter) run(){
 	}
 	grpcServer := grpc.NewServer()
 	order.RegisterOrderServer(grpcServer, a)
-	// if config.GetEnv() == "development" {
-	// 	reflection.Register(grpcServer)
-	// }
+	if config.GetEnv() == "development" {
+		reflection.Register(grpcServer)
+	}
 	if err := grpcServer.Serve(listen); err != nil {
 		log.Fatal("failed to serve grpc on port ")
 	}
