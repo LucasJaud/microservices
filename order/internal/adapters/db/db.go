@@ -9,7 +9,7 @@ import(
 
 type Order struct {
 	gorm.Model
-	CustomerID int64
+	CostumerID int64
 	Status string
 	OrderItems []OrderItem
 }
@@ -48,7 +48,7 @@ func (a Adapter) Get(id string) (domain.Order, error) {
 	}
 	order := domain.Order{
 		ID: int64(orderEntity.ID),
-		CustomerID: orderEntity.CustomerID,
+		CostumerID: orderEntity.CostumerID,
 		OrderItems: orderItems,
 		CreatedAt: orderEntity.CreatedAt.UnixNano(),
 	}
@@ -65,7 +65,7 @@ func (a Adapter) Save(order *domain.Order) error{
 		})
 	}
 	orderModel := Order{
-		CustomerID: order.CustomerID,
+		CostumerID: order.CostumerID,
 		Status: order.Status,
 		OrderItems: orderItems,
 	}
