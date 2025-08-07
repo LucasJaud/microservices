@@ -18,7 +18,7 @@ func GetEnv() string {
 }
 
 func GetDataSourceURl() string{
-	return getEnvironmentValue("DATASOUCE_URL")
+	return getEnvironmentValue("DATA_SOURCE_URL")
 }
 
 func GetPaymentServiceUrl() string{
