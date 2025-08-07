@@ -28,10 +28,10 @@ use `payment`;
 
 CREATE TABLE payments (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    customer_id_id BIGINT NOT NULL,
+    customer_id BIGINT NOT NULL,
     status VARCHAR(50) NOT NULL DEFAULT 'Pending',
     order_id BIGINT NOT NULL,
-    total_price DECIMAL(10,2) NOT NULL,
+    total_price DECIMAL(10,2)NOT NULL,
     created_at BIGINT NOT NULL,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
