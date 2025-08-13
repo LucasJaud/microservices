@@ -11,3 +11,5 @@ DATA_SOURCE_URL=root:minhasenha@tcp(127.0.0.1:3306)/order APPLICATION_PORT=3000 
 
 //teste
 grpcurl -d '{"customer_id": 123 , "order_items":[{"product_code": "prod", "quantity": 4, "unit_price": 12}]}' -plaintext localhost:3000 Order/Create
+
+grpcurl -d '{"customer_id": 123 , "order_items":[{"product_code": "prod", "quantity": 4, "unit_price": 1200}]}' -plaintext localhost:3000 Order/Create
