@@ -29,7 +29,7 @@ use `payment`;
 CREATE TABLE payments (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     customer_id BIGINT NOT NULL,
-    status VARCHAR(50) NOT NULL DEFAULT 'Pending',
+    status VARCHAR(50) NOT NULL,
     order_id BIGINT NOT NULL,
     total_price DECIMAL(10,2)NOT NULL,
     created_at BIGINT NOT NULL,
