@@ -62,16 +62,29 @@ func (a Adapter) Save(order *domain.Order) error{
 			ProductCode: orderItem.ProductCode,
 			UnitPrice: orderItem.UnitPrice,
 			Quantity: orderItem.Quantity,
+			OrderId: uint(order.ID),
 		})
 	}
-	orderModel := Order{
+	if order.ID == 0{
+		orderModel := Order{
 		CustomerID: order.CustomerID,
 		Status: order.Status,
 		OrderItems: orderItems,
+		}
+		res := a.db.Create(&orderModel)
+		if res.Error == nil {
+			order.ID = int64(orderModel.ID)
+		}
+		return res.Error
 	}
-	res := a.db.Create(&orderModel)
-	if res.Error == nil {
-		order.ID = int64(orderModel.ID)
+
+	res := a.db.Model(&Order{}).Where("id = ?",order.ID).Updates(Order{
+		CustomerID: order.CustomerID,
+		Status: order.Status,
+		OrderItems: orderItems,
+	})
+	if res.Error != nil {
+		return res.Error
 	}
-	return res.Error
+	return  nil
 }
