@@ -1,6 +1,10 @@
 package api
 
 import (
+	"context"
+	"log"
+	"time"
+
 	"github.com/LucasJaud/microservices/order/internal/application/core/domain"
 	"github.com/LucasJaud/microservices/order/internal/ports"
 	"google.golang.org/grpc/codes"
@@ -19,7 +23,9 @@ func NewApplication(db ports.DBPort, payment ports.PaymentPort) *Application {
 	}
 }
 
-func (a Application) PlaceOrder(order domain.Order) (domain.Order, error) {
+func (a Application) PlaceOrder(ctx context.Context,order domain.Order) (domain.Order, error) {
+	ctxTimeout , cancel := context.WithTimeout (context.Background(), 2*time.Second )
+	defer cancel()
 	err := a.db.Save(&order)
 	if err != nil {
 		return domain.Order{}, err
@@ -38,8 +44,11 @@ func (a Application) PlaceOrder(order domain.Order) (domain.Order, error) {
 		return order, status.Error(codes.InvalidArgument, "Quantity cannot be more than 50.")
 	}
 
-	paymentErr := a.payment.Charge(&order)
+	paymentErr := a.payment.Charge(ctxTimeout, &order)
 	if paymentErr != nil {
+		if status.Code(paymentErr) == codes.DeadlineExceeded {
+			log.Fatalf("Erro: %v",paymentErr)
+		}
 		order.Status = "Canceled"
 		if saveErr := a.db.Save(&order); saveErr != nil {
 			return domain.Order{}, saveErr

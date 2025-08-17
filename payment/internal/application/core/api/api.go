@@ -22,6 +22,7 @@ func NewApplication(db ports.DBPort) *Application {
 
 func (a Application) Charge(ctx context.Context, payment domain.Payment) (domain.Payment, error) {
 	log.Println("Iniciando o Charge...")
+
 	if payment.TotalPrice > 1000.00 {
 		return domain.Payment{}, status.Error(codes.InvalidArgument, "Payment cannot be more than a thousand.")
 	}
