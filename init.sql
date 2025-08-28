@@ -28,6 +28,21 @@ CREATE TABLE order_items (
     FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE
 );
 
+CREATE TABLE stock_items (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    product_code VARCHAR(100) NOT NULL UNIQUE,
+    name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP NULL
+);
+
+INSERT INTO stock_items (product_code, name) VALUES
+('prod001', 'Camiseta'),
+('prod002', 'Caneca'),
+('prod003', 'Livro'),
+('prod004', 'tenis');
+
 
 USE `payment`;
 

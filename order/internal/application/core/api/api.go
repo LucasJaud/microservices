@@ -15,13 +15,15 @@ type Application struct {
 	db ports.DBPort
 	payment ports.PaymentPort
 	shipping ports.ShippingPort
+	stock ports.StockPort
 }
 
-func NewApplication(db ports.DBPort, payment ports.PaymentPort, shipping ports.ShippingPort) *Application {
+func NewApplication(db ports.DBPort, payment ports.PaymentPort, shipping ports.ShippingPort, stock ports.StockPort) *Application {
 	return &Application{
 		db: db,
 		payment: payment,
 		shipping: shipping,
+		stock: stock,
 	}
 }
 
@@ -32,6 +34,20 @@ func (a Application) PlaceOrder(ctx context.Context,order domain.Order) (domain.
 	if err != nil {
 		return domain.Order{}, err
 	}
+
+	productCodes := []string{}
+	for _, item := range order.OrderItems {
+		productCodes = append(productCodes, item.ProductCode)
+	}
+
+	exists, missing, err := a.stock.ExistsStockItems(productCodes)
+	if err != nil {
+		return domain.Order{}, status.Error(codes.Internal, "Error checking stock")
+	}
+	if !exists {
+		return domain.Order{}, status.Errorf(codes.InvalidArgument, "The following items do not exist: %v", missing)
+	}
+
 
 	Quantity := int32(0)
 	for _,item := range order.OrderItems {

@@ -27,7 +27,7 @@ func main() {
 		log.Fatalf("Failed to initialize shipping stub. Errpr: %v", err)
 
 	}
-	application := api.NewApplication(dbAdapter,paymentAdapter,shippingAdapter)
+	application := api.NewApplication(dbAdapter,paymentAdapter,shippingAdapter, dbAdapter)
 	grpcAdapter := grpc.NewAdapter(application, config.GetApplicationPort())
 	grpcAdapter.Run()
 }

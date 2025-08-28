@@ -14,7 +14,7 @@ import (
 
 
 func (a Adapter) Create(ctx context.Context, request *shipping.CreateShippingRequest) (*shipping.CreateShippingResponse, error){
-	log.WithContext(ctx).Info("Creating payment...")
+	log.WithContext(ctx).Info("Creating shipping...")
 
 	orderItems := make([]domain.ShippingItem, len(request.GetItems()))
     for i, item := range request.GetItems() {
