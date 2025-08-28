@@ -12,9 +12,7 @@ type Shipping struct {
 
 type OrderItem struct {
 	ProductCode string
-	UnitPrice float32
 	Quantity int32
-	OrderId uint
 }
 
 func NewShipping(orderID int64, orderItems []OrderItem) Shipping{

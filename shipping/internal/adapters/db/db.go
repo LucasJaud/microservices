@@ -1,8 +1,9 @@
 package db
 
-
-import(
+import (
+	"context"
 	"fmt"
+
 	"github.com/LucasJaud/microservices/shipping/internal/application/core/domain"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -35,12 +36,11 @@ func NewAdapter(dataSourceUrl string) (*Adapter, error) {
 	return &Adapter{db: db}, nil
 }
 
-func (a *Adapter) Save(shipping *domain.Shipping)  error{
+func (a *Adapter) Save(ctx context.Context, shipping *domain.Shipping)  error{
 	var orderItems []OrderItem
 	for _, orderItem := range shipping.OrderItems{
 		orderItems = append(orderItems, OrderItem{
 			ProductCode: orderItem.ProductCode,
-			UnitPrice: orderItem.UnitPrice,
 			Quantity: orderItem.Quantity,
 			ShippingID: uint(shipping.ID),
 		})

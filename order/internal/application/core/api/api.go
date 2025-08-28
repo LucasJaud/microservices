@@ -4,7 +4,6 @@ import (
 	"context"
 	"log"
 	"time"
-
 	"github.com/LucasJaud/microservices/order/internal/application/core/domain"
 	"github.com/LucasJaud/microservices/order/internal/ports"
 	"google.golang.org/grpc/codes"
@@ -14,12 +13,14 @@ import (
 type Application struct {
 	db ports.DBPort
 	payment ports.PaymentPort
+	shipping ports.ShippingPort
 }
 
-func NewApplication(db ports.DBPort, payment ports.PaymentPort) *Application {
+func NewApplication(db ports.DBPort, payment ports.PaymentPort, shipping ports.ShippingPort) *Application {
 	return &Application{
 		db: db,
 		payment: payment,
+		shipping: shipping,
 	}
 }
 
@@ -54,6 +55,13 @@ func (a Application) PlaceOrder(ctx context.Context,order domain.Order) (domain.
 			return domain.Order{}, saveErr
 		}
 		return order, paymentErr
+	}
+
+	err = a.shipping.Create(ctxTimeout, &order)
+	if err != nil {
+		order.Status = "Canceled"
+		_ = a.db.Save(&order)
+		return order, err
 	}
 
 	order.Status = "Paid"

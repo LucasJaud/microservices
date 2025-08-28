@@ -5,13 +5,14 @@ go 1.24.4
 require (
 	github.com/LucasJaud/microservices-proto/golang/order v0.0.0
 	github.com/LucasJaud/microservices-proto/golang/payment v0.0.0
-	google.golang.org/grpc v1.74.2
+	google.golang.org/grpc v1.75.0
 	gorm.io/driver/mysql v1.6.0
 	gorm.io/gorm v1.30.1
 )
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
+	github.com/LucasJaud/microservices-proto/golang/shipping v0.0.0-20250828131226-c2bb762c181e
 	github.com/go-sql-driver/mysql v1.9.3 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
