@@ -1,0 +1,54 @@
+version: "3.9"
+
+services:
+  db:
+    image: mysql:8
+    container_name: ms-db
+    environment:
+      MYSQL_ROOT_PASSWORD: minhasenha
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3306:3306"
+
+  payment:
+    build: ./payment
+    container_name: ms-payment
+    environment:
+      DB_DRIVER: mysql
+      DATA_SOURCE_URL: root:minhasenha@tcp(db:3306)/payment
+      APPLICATION_PORT: 3001
+      ENV: development
+    depends_on:
+      - db
+    ports:
+      - "3001:3001"
+
+  shipping:
+    build: ./shipping
+    container_name: ms-shipping
+    environment:
+      DB_DRIVER: mysql
+      DATA_SOURCE_URL: root:minhasenha@tcp(db:3306)/shipping
+      APPLICATION_PORT: 3002
+      ENV: development
+    depends_on:
+      - db
+    ports:
+      - "3002:3002"
+
+  order:
+    build: ./order
+    container_name: ms-order
+    environment:
+      DATA_SOURCE_URL: root:minhasenha@tcp(db:3306)/order
+      APPLICATION_PORT: 3000
+      ENV: development
+      PAYMENT_SERVICE_URL: payment:3001
+      SHIPPING_SERVICE_URL: shipping:3002
+    depends_on:
+      - db
+      - payment
+      - shipping
+    ports:
+      - "3000:3000"
