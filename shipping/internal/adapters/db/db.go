@@ -12,14 +12,13 @@ import (
 type Shipping struct {
 	gorm.Model
 	OrderID int64
-	OrderItems []OrderItem
+	ShippingItems []ShippingItem
 	DeliveryDays int32
 }
 
-type OrderItem struct {
+type ShippingItem struct {
 	gorm.Model
 	ProductCode string
-	UnitPrice float32
 	Quantity int32
 	ShippingID  uint
 }
@@ -37,9 +36,9 @@ func NewAdapter(dataSourceUrl string) (*Adapter, error) {
 }
 
 func (a *Adapter) Save(ctx context.Context, shipping *domain.Shipping)  error{
-	var orderItems []OrderItem
-	for _, orderItem := range shipping.OrderItems{
-		orderItems = append(orderItems, OrderItem{
+	var shippingItems []ShippingItem
+	for _, orderItem := range shipping.ShippingItems{
+		shippingItems = append(shippingItems, ShippingItem{
 			ProductCode: orderItem.ProductCode,
 			Quantity: orderItem.Quantity,
 			ShippingID: uint(shipping.ID),
@@ -50,7 +49,7 @@ func (a *Adapter) Save(ctx context.Context, shipping *domain.Shipping)  error{
 		shippingModel := Shipping{
 			OrderID: shipping.OrderID,
 			DeliveryDays: shipping.DeliveryDays,
-			OrderItems: orderItems,
+			ShippingItems: shippingItems,
 		}
 		res := a.db.Create(&shippingModel)
 		if res.Error == nil{
@@ -61,7 +60,7 @@ func (a *Adapter) Save(ctx context.Context, shipping *domain.Shipping)  error{
 
 	res := a.db.Model(&Shipping{}).Where("id = ?",shipping.ID).Updates(Shipping{
 		OrderID: shipping.OrderID,
-		OrderItems: orderItems,
+		ShippingItems: shippingItems,
 		DeliveryDays: shipping.DeliveryDays,
 	})
 	if res.Error != nil {

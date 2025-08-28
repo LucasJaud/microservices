@@ -14,6 +14,8 @@ CREATE TABLE orders (
     deleted_at TIMESTAMP NULL
 );
 
+ALTER TABLE orders ADD COLUMN delivery_days INT NULL;
+
 CREATE TABLE order_items (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     order_id BIGINT NOT NULL,

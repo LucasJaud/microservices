@@ -10,6 +10,8 @@ require (
 	gorm.io/gorm v1.30.1
 )
 
+require google.golang.org/genproto/googleapis/api v0.0.0-20250818200422-3122310a409c // indirect
+
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/LucasJaud/microservices-proto/golang/shipping v0.0.0-20250828131226-c2bb762c181e
@@ -21,8 +23,9 @@ require (
 	golang.org/x/net v0.42.0 // indirect
 	golang.org/x/sys v0.34.0 // indirect
 	golang.org/x/text v0.27.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250804133106-a7a43d27e69b // indirect
-	google.golang.org/protobuf v1.36.6 // indirect
+	google.golang.org/genproto v0.0.0-20250826171959-ef028d996bc1
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250818200422-3122310a409c // indirect
+	google.golang.org/protobuf v1.36.8 // indirect
 )
 
 replace github.com/LucasJaud/microservices-proto/golang/order => ../../microservices-proto/golang/order

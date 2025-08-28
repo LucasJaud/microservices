@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"time"
+
 	"github.com/LucasJaud/microservices/order/internal/application/core/domain"
 	"github.com/LucasJaud/microservices/order/internal/ports"
 	"google.golang.org/grpc/codes"
@@ -57,13 +58,14 @@ func (a Application) PlaceOrder(ctx context.Context,order domain.Order) (domain.
 		return order, paymentErr
 	}
 
-	err = a.shipping.Create(ctxTimeout, &order)
+	deliveryDays, err := a.shipping.Create(ctxTimeout, &order)
 	if err != nil {
-		order.Status = "Canceled"
+		order.Status = "Paid"
 		_ = a.db.Save(&order)
 		return order, err
 	}
 
+	order.DeliveryDays = deliveryDays
 	order.Status = "Paid"
 	updateErr := a.db.Save(&order)
 	if updateErr != nil {

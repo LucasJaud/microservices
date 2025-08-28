@@ -7,6 +7,10 @@ senha=minhasenha
 // payment
 DB_DRIVER=mysql DATA_SOURCE_URL=root:minhasenha@tcp(127.0.0.1:3306)/payment APPLICATION_PORT=3001 ENV=development go run cmd/main.go
 
+//shipping
+DB_DRIVER=mysql DATA_SOURCE_URL=root:minhasenha@tcp(127.0.0.1:3306)/shipping APPLICATION_PORT=3002 ENV=development go run cmd/main.go
+
+
 //order
 DATA_SOURCE_URL=root:minhasenha@tcp(127.0.0.1:3306)/order APPLICATION_PORT=3000 ENV=development PAYMENT_SERVICE_URL=localhost:3001 go run cmd/main.go
 

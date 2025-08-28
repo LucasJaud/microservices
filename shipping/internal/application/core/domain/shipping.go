@@ -5,30 +5,30 @@ import "time"
 type Shipping struct {
 	ID int64
 	OrderID int64
-	OrderItems []OrderItem
+	ShippingItems []ShippingItem
 	DeliveryDays int32 
 	CreatedAt int64
 }
 
-type OrderItem struct {
+type ShippingItem struct {
 	ProductCode string
 	Quantity int32
 }
 
-func NewShipping(orderID int64, orderItems []OrderItem) Shipping{
-	deliveryDays := calcDeliveryDays(orderItems)
+func NewShipping(orderID int64, shippingItems []ShippingItem) Shipping{
+	deliveryDays := calcDeliveryDays(shippingItems)
 	return Shipping{
 		OrderID: orderID,
-		OrderItems: orderItems,
+		ShippingItems: shippingItems,
 		DeliveryDays: deliveryDays,
 		CreatedAt: time.Now().Unix(),
 	}
 }
 
-func calcDeliveryDays(orderItems []OrderItem) int32 {
+func calcDeliveryDays(shippingItems []ShippingItem) int32 {
 	totalQuant := int32(0)
 
-	for _, item := range orderItems {
+	for _, item := range shippingItems {
 		totalQuant += item.Quantity
 	}
 

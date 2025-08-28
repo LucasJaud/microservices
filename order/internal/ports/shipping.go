@@ -7,5 +7,5 @@ import (
 )
 
 type ShippingPort interface {
-	Create(ctx context.Context, order *domain.Order) error
+	Create(ctx context.Context, order *domain.Order) (int32, error) // retorna DeliveryDays
 }

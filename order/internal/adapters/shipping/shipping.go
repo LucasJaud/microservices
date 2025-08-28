@@ -16,6 +16,7 @@ type Adapter struct {
 	client shipping.ShippingClient
 }
 
+// Inicializa o adapter do Shipping
 func NewAdapter(shippingServiceUrl string) (*Adapter, error) {
 	opts := []grpc.DialOption{
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
@@ -26,7 +27,7 @@ func NewAdapter(shippingServiceUrl string) (*Adapter, error) {
 		)),
 	}
 
-	conn, err := grpc.Dial(shippingServiceUrl, opts...)
+	conn, err := grpc.NewClient(shippingServiceUrl, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -35,7 +36,6 @@ func NewAdapter(shippingServiceUrl string) (*Adapter, error) {
 	return &Adapter{client: client}, nil
 }
 
-// Create envia o pedido para o Shipping Service e recebe o DeliveryDays
 func (a *Adapter) Create(ctx context.Context, order *domain.Order) (int32, error) {
 	var items []*shipping.ShippingItem
 	for _, i := range order.OrderItems {
